@@ -16,7 +16,7 @@
   "editor.quickSuggestions": {
     "other": true,
     "comments": false,
-    "strings": false
+    "strings": true
   },
 
   // Controls whether suggestions should be accepted on commit characters. For example, in JavaScript, the semi-colon (`;`) can be a commit character that accepts a suggestion and types that character.
@@ -47,5 +47,7 @@
   "editor.parameterHints.enabled": true,
   "[html]": {
     "editor.defaultFormatter": "vscode.html-language-features"
-  }
+  },
+
+  "editor.suggest.snippetsPreventQuickSuggestions": false
 }
