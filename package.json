@@ -11,13 +11,17 @@
   "author": "MD",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.18"
+    "nodemon": "^2.0.18",
+    "sequelize-cli": "^6.4.1"
   },
   "dependencies": {
     "body-parser": "^1.20.0",
     "ejs": "^3.1.8",
     "express": "^4.18.1",
+    "morgan": "^1.10.0",
     "mysql2": "^2.3.3",
-    "sequelize": "^6.21.2"
+    "sequelize": "^6.21.2",
+    "sequelize-auto": "^0.8.8",
+    "sequelize-paginate": "^1.1.6"
   }
 }
