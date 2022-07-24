@@ -12,7 +12,12 @@ const MongoClient = mongodb.MongoClient;
 let _db;
 
 const mongoConnect = (callback) => {
-  MongoClient.connect('mongodb://localhost:27017/nodejs')
+  MongoClient.connect('mongodb://localhost:27017/nodejs', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+  })
     .then((client) => {
       console.log('Connected!');
       _db = client.db();
