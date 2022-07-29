@@ -12,20 +12,21 @@ exports.getPosts = (req, res, next) => {
   let totalItems;
   Post.find()
     .countDocuments()
-    .then(count => {
+    .then((count) => {
       totalItems = count;
       return Post.find()
+        .populate('creator')
         .skip((currentPage - 1) * perPage)
         .limit(perPage);
     })
-    .then(posts => {
+    .then((posts) => {
       res.status(200).json({
         message: 'Fetched posts successfully.',
         posts: posts,
-        totalItems: totalItems
+        totalItems: totalItems,
       });
     })
-    .catch(err => {
+    .catch((err) => {
       if (!err.statusCode) {
         err.statusCode = 500;
       }
@@ -53,26 +54,26 @@ exports.createPost = (req, res, next) => {
     title: title,
     content: content,
     imageUrl: imageUrl,
-    creator: req.userId
+    creator: req.userId,
   });
   post
     .save()
-    .then(result => {
+    .then((result) => {
       return User.findById(req.userId);
     })
-    .then(user => {
+    .then((user) => {
       creator = user;
       user.posts.push(post);
       return user.save();
     })
-    .then(result => {
+    .then((result) => {
       res.status(201).json({
         message: 'Post created successfully!',
         post: post,
-        creator: { _id: creator._id, name: creator.name }
+        creator: { _id: creator._id, name: creator.name },
       });
     })
-    .catch(err => {
+    .catch((err) => {
       if (!err.statusCode) {
         err.statusCode = 500;
       }
@@ -83,7 +84,7 @@ exports.createPost = (req, res, next) => {
 exports.getPost = (req, res, next) => {
   const postId = req.params.postId;
   Post.findById(postId)
-    .then(post => {
+    .then((post) => {
       if (!post) {
         const error = new Error('Could not find post.');
         error.statusCode = 404;
@@ -91,7 +92,7 @@ exports.getPost = (req, res, next) => {
       }
       res.status(200).json({ message: 'Post fetched.', post: post });
     })
-    .catch(err => {
+    .catch((err) => {
       if (!err.statusCode) {
         err.statusCode = 500;
       }
@@ -119,7 +120,7 @@ exports.updatePost = (req, res, next) => {
     throw error;
   }
   Post.findById(postId)
-    .then(post => {
+    .then((post) => {
       if (!post) {
         const error = new Error('Could not find post.');
         error.statusCode = 404;
@@ -138,10 +139,10 @@ exports.updatePost = (req, res, next) => {
       post.content = content;
       return post.save();
     })
-    .then(result => {
+    .then((result) => {
       res.status(200).json({ message: 'Post updated!', post: result });
     })
-    .catch(err => {
+    .catch((err) => {
       if (!err.statusCode) {
         err.statusCode = 500;
       }
@@ -152,7 +153,7 @@ exports.updatePost = (req, res, next) => {
 exports.deletePost = (req, res, next) => {
   const postId = req.params.postId;
   Post.findById(postId)
-    .then(post => {
+    .then((post) => {
       if (!post) {
         const error = new Error('Could not find post.');
         error.statusCode = 404;
@@ -167,17 +168,17 @@ exports.deletePost = (req, res, next) => {
       clearImage(post.imageUrl);
       return Post.findByIdAndRemove(postId);
     })
-    .then(result => {
+    .then((result) => {
       return User.findById(req.userId);
     })
-    .then(user => {
+    .then((user) => {
       user.posts.pull(postId);
       return user.save();
     })
-    .then(result => {
+    .then((result) => {
       res.status(200).json({ message: 'Deleted post.' });
     })
-    .catch(err => {
+    .catch((err) => {
       if (!err.statusCode) {
         err.statusCode = 500;
       }
@@ -185,7 +186,7 @@ exports.deletePost = (req, res, next) => {
     });
 };
 
-const clearImage = filePath => {
+const clearImage = (filePath) => {
   filePath = path.join(__dirname, '..', filePath);
-  fs.unlink(filePath, err => console.log(err));
+  fs.unlink(filePath, (err) => console.log(err));
 };
