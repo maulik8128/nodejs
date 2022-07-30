@@ -9,7 +9,6 @@ const feedRoutes = require('./routes/feed');
 const authRoutes = require('./routes/auth');
 
 const app = express();
-const MONGODB_URI = 'mongodb://localhost:27017/nodejs';
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -17,7 +16,7 @@ const fileStorage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     cb(null, new Date().toISOString() + '-' + file.originalname);
-  },
+  }
 });
 
 const fileFilter = (req, file, cb) => {
@@ -61,13 +60,14 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect(MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
+  .connect(
+    'mongodb+srv://maximilian:9u4biljMQc4jjqbe@cluster0-ntrwp.mongodb.net/messages?retryWrites=true'
+  )
+  .then(result => {
+    const server = app.listen(8080);
+    const io = require('./socket').init(server);
+    io.on('connection', socket => {
+      console.log('Client connected');
+    });
   })
-  .then((result) => {
-    app.listen(8080);
-  })
-  .catch((err) => console.log(err));
+  .catch(err => console.log(err));

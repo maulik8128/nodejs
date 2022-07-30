@@ -1,5 +1,5 @@
 {
-  "name": "nodejs",
+  "name": "nodejs-complete-guide",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/udemy-course-nodejs-complete"
   },
   "author": "",
   "license": "ISC",
@@ -20,7 +20,8 @@
     "express-validator": "^5.3.0",
     "jsonwebtoken": "^8.3.0",
     "mongoose": "^5.3.2",
-    "multer": "^1.4.0"
+    "multer": "^1.4.0",
+    "socket.io": "^2.1.1"
   },
   "devDependencies": {
     "nodemon": "^1.18.4"
